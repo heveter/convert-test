@@ -1,0 +1,261 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger",
+        "version": "1"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "ca7c0cb6772de9bffbb8c896980cebc8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "c373bc4cffa4a56fc64e3979b8ee7b96",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "minLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/currency/list": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "operationId": "bf6e2278db020e0f6b689da5b9c3d52f",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "type": "string",
+                                                "example": "USD"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "США"
+                                            },
+                                            "rate": {
+                                                "type": "number",
+                                                "example": 88.11
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "AuthHeader": []
+                    }
+                ]
+            }
+        },
+        "/api/currency/exchange-rate/{currency}": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "operationId": "d22f428dd3c4c64d3813cd1a8e4ea0b3",
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "path",
+                        "example": "USD"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "USD"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "США"
+                                        },
+                                        "rate": {
+                                            "type": "number",
+                                            "example": 88.11
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "AuthHeader": []
+                    }
+                ]
+            }
+        },
+        "/api/currency/convert": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "operationId": "bfd36244b16094e6fed7c3f09c481f03",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "example": "USD"
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "example": "EUR"
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "example": 100
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "converted_amount": {
+                                            "type": "number",
+                                            "example": 88.11
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "AuthHeader": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "AuthHeader": {
+                "type": "http",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Currency",
+            "description": "Currency"
+        }
+    ]
+}

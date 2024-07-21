@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+    php:
+        build:
+            context: .
+            dockerfile: _docker/php/Dockerfile
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            - database
+        container_name: convert-test-php
+
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./:/var/www/html
+            - ./_docker/nginx/conf.d/:/etc/nginx/conf.d
+        ports:
+            - "8000:80"
+        depends_on:
+            - php
+
+    database:
+        image: postgres:latest
+        volumes:
+            - ./tmp/database:/var/lib/postgresql/data
+        ports:
+            - "5436:5432"
+        environment:
+            POSTGRES_DB: database
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password

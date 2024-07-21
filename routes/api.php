@@ -16,11 +16,15 @@ use App\Http\Controllers\CurrencyController;
 |
 */
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-//Route::middleware('auth:api')->group(function () {
-    Route::get('/currencies', [CurrencyController::class, 'getCurrencies']);
-    Route::get('/exchange-rate/{currency}', [CurrencyController::class, 'getExchangeRate']);
-    Route::post('/convert', [CurrencyController::class, 'convertCurrency']);
-//});
+Route::group([
+    'prefix' => 'currency',
+    'as' => 'currency.',
+    'middleware' => ['auth:api']
+], function () {
+    Route::get('/list', [CurrencyController::class, 'getCurrencies'])->name('list');
+    Route::get('/exchange-rate/{currency}', [CurrencyController::class, 'getExchangeRate'])->name('exchange-rate');
+    Route::get('/convert', [CurrencyController::class, 'convertCurrency'])->name('convert');
+});
